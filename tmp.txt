@@ -1,0 +1,109 @@
+     const thirtyDaysViewsCount = await fetchData(
+        `https://www.googleapis.com/youtube/v3/activities?channelId=${response.items[0].id.channelId}&key=${apiKey}&publishedAfter=${thirtyDays}&maxResults=50&part=contentDetails`
+      ).then(async (response) => {
+        const newArray = response.items.map((item) => {
+          return item?.contentDetails?.upload?.videoId;
+        });
+
+        const views = await fetchData(
+          `https://www.googleapis.com/youtube/v3/videos?id=${newArray.toString()}&key=${apiKey}&maxResults=50&part=statistics`
+        ).then((data) => {
+          const sum = data.items.reduce((partialSum, a) => {
+            return Number(partialSum) + Number(a.statistics.viewCount);
+          }, 0);
+
+          return sum;
+        });
+
+        return views;
+      });
+
+
+
+
+
+      ---------------------------------------------------------------
+
+
+       const promises = [
+        fetchData(
+          `${baseUri}id=${response.items[0].id.channelId}&key=${apiKey}&part=snippet,contentDetails,statistics,id,status,topicDetails`
+        ),
+        fetchData(
+          `https://yt.lemnoslife.com/channels?part=snippet,about&id=${response.items[0].id.channelId}`
+        ),
+      ];
+
+      Promise.all(promises).then((data) => {
+        const displayData = {
+          channelName: data[0].items[0].snippet.title,
+          description: data[0].items[0].snippet.description,
+          country: data[0].items[0].snippet.country,
+          subscribers: data[0].items[0].statistics.subscriberCount,
+          totalViews: data[0].items[0].statistics.viewCount,
+          totalVideos: data[0].items[0].statistics.videoCount,
+          categories: data[0].items[0].topicDetails.topicCategories.map(
+            (categorie) => {
+              return categorie.split("/")[categorie.split("/").length - 1];
+            }
+          ),
+          channelCreationDate: new Date(
+            data[1].items[0].about.stats.joinedDate * 1000
+          ).toLocaleDateString("en-GB"),
+          socialLinks: data[1]?.items[0]?.about?.links.map((link) => {
+            return link.url;
+          }),
+        };
+        console.log(displayData);
+
+        chrome.storage.local.get(["data"], function (result) {
+          console.log("dataSet", result.data);
+          if (result.data === undefined) {
+            chrome.storage.local.set({ data: [displayData] }, function () {
+              console.log("Value is set");
+            });
+          } else {
+            chrome.storage.local.set(
+              { data: [...result.data, displayData] },
+              function () {
+                console.log("Value is set");
+              }
+            );
+          }
+        });
+
+        // chrome.storage.local.remove("data", function () {
+        //   console.log("data removed");
+        // });
+      });
+
+
+      //--------------------------------------------------------------------------
+// self.addEventListener("fetch", function (event) {
+//   console.log(event);
+// });
+
+// const params = {
+//   active: true,
+//   currentWindow: true,
+// };
+// chrome.tabs.query(params, function (tabs) {
+//   const msg = {
+//     command: "fetchData",
+//     url: details.url,
+//   };
+//   chrome.runtime.sendMessage(msg, function (response) {
+//     console.log("haider", response);
+//   });
+// });
+
+
+
+      //--------------------------------------------------------------------------
+      
+              channelCreationDate: new Date(
+          data[1].items[0].about.stats.joinedDate * 1000
+        ).toLocaleDateString("en-GB"),
+        socialLinks: data[1]?.items[0]?.about?.links.map((link) => {
+          return link.url;
+        }),

@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 400px;
+  width: 600px;
+  background: rgb(10, 0, 36);
+  background: linear-gradient(
+    45deg,
+    rgba(10, 0, 36, 1) 0%,
+    rgba(59, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+button,
+.extensionAddButton {
+  height: 40px;
+  width: 120px;
+  border-radius: 35px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+.extensionAddButton {
+  position: absolute;
+  z-index: 9999;
+  top: 40vh;
+  right: 10vw;
+}
+.dataContainer {
+  color: white;
+  font-size: 12px;
+  overflow-wrap: break-word;
+}

@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Youtube Scrapper",
+  "version": "1.0.0",
+  "description": "getting Youtube data",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "webNavigation", "storage"],
+  "action": {
+    "default_icon": "icon.png",
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "matches": [
+        "https://www.youtube.com/c/*",
+        "https://www.youtube.com/user/*",
+        "https://www.youtube.com/channel/*",
+        "https://www.youtube.com/@*"
+      ]
+    }
+  ]
+}

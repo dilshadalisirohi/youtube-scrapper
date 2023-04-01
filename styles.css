@@ -1,0 +1,15 @@
+.extensionAddButton {
+  position: absolute;
+  z-index: 9999;
+  top: 40vh;
+  right: 10vw;
+}
+button,
+.extensionAddButton {
+  height: 40px;
+  width: 120px;
+  border-radius: 35px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
